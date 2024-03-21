@@ -64,7 +64,6 @@ export class NotesController {
       return res.status(HttpStatus.BAD_REQUEST).json({
         status: 'failed',
         message: 'Failed error',
-        data: {},
         error: error,
       });
     }
