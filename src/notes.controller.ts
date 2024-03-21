@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Req,
   Res,
 } from '@nestjs/common';
@@ -94,10 +95,36 @@ export class NotesController {
     }
   }
 
-  @Delete(':id')
-  async deleteNote(@Res() res: Response, @Param() params: any) {
+  @Put(':id')
+  async updateNote(
+    @Param('id') id: string,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     try {
-      const id = params.id;
+      this.appService.update(id, {
+        title: req.body.title,
+        content: req.body.content,
+        updated_at: new Date(),
+        status: req.body.status,
+      });
+
+      return res.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Success update note',
+      });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        status: 'failed',
+        message: 'Failed update note',
+        error: error,
+      });
+    }
+  }
+
+  @Delete(':id')
+  async deleteNote(@Res() res: Response, @Param('id') id: string) {
+    try {
       const note = await this.appService.destory(id);
 
       return res.status(HttpStatus.OK).json({
