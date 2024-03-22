@@ -11,13 +11,14 @@ import {
 } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { NotesService } from './notes.service';
+import { AuthRequest } from './requests/auth.request';
 
 @Controller('note')
 export class NotesController {
   constructor(private readonly appService: NotesService) {}
 
   @Get()
-  async getNotes(@Res() res: Response, @Req() req: Request) {
+  async getNotes(@Res() res: Response, @Req() req: AuthRequest) {
     try {
       const filter = {};
       const { status, search } = req.query;
