@@ -9,9 +9,9 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { NotesService } from './notes.service';
-import { AuthRequest } from './requests/auth.request';
+import { AuthRequest } from '../requests/auth.request';
 
 @Controller('note')
 export class NotesController {
@@ -25,7 +25,7 @@ export class NotesController {
 
       if (status || search) {
         filter['$or'] = [
-          { $and: [{ status: status }] },
+          { $and: [{ status: status, author: req.user.id }] },
           {
             title: {
               $regex: new RegExp(`^${search}`, 'i'),
@@ -71,12 +71,13 @@ export class NotesController {
   }
 
   @Post()
-  async storeNote(@Req() req: Request, @Res() res: Response) {
+  async storeNote(@Req() req: AuthRequest, @Res() res: Response) {
     try {
       const note = await this.appService.create({
         title: req.body.title,
         content: req.body.content,
         status: req.body.status || 'open',
+        author: req.user.id,
         created_at: new Date(),
         updated_at: new Date(),
       });
@@ -98,11 +99,11 @@ export class NotesController {
   @Put(':id')
   async updateNote(
     @Param('id') id: string,
-    @Req() req: Request,
+    @Req() req: AuthRequest,
     @Res() res: Response,
   ) {
     try {
-      this.appService.update(id, {
+      this.appService.update(req.user.id, id, {
         title: req.body.title,
         content: req.body.content,
         updated_at: new Date(),

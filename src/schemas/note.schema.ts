@@ -15,6 +15,9 @@ export class Note {
   status: string;
 
   @Prop()
+  author: string;
+
+  @Prop()
   created_at: Date;
 
   @Prop()

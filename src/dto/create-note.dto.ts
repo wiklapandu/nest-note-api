@@ -11,6 +11,9 @@ export class CreateNoteDto {
   @IsString()
   status: string;
 
+  @IsString()
+  author: string;
+
   @IsDate()
   created_at: Date;
 
