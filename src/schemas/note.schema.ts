@@ -9,6 +9,9 @@ export class Note {
   title: string;
 
   @Prop()
+  color?: string;
+
+  @Prop()
   content: string;
 
   @Prop()

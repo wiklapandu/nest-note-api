@@ -37,6 +37,8 @@ export class NotesController {
             },
           },
         ];
+      } else {
+        filter['$or'] = [{ $and: [{ author: req.user.id }] }];
       }
 
       return res.status(HttpStatus.OK).json({
@@ -75,6 +77,7 @@ export class NotesController {
     try {
       const note = await this.appService.create({
         title: req.body.title,
+        color: req.body.color,
         content: req.body.content,
         status: req.body.status || 'open',
         author: req.user.id,
@@ -105,6 +108,7 @@ export class NotesController {
     try {
       this.appService.update(req.user.id, id, {
         title: req.body.title,
+        color: req.body.color,
         content: req.body.content,
         updated_at: new Date(),
         status: req.body.status,
