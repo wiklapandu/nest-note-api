@@ -1,73 +1,172 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Nest Note Rest API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### Summary
+api server for note application client web https://github.com/wiklapandu/-client-note-app.git 
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Features
+- Authorization
+  - login
+  - register
+- Note
+  - get all note by author id
+  - get detail note
+  - create note
+  - update note
+  - delete note
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### API
 
-## Installation
 
-```bash
-$ npm install
-```
+#### Authorization
 
-## Running the app
+<details>
+<summary><code>POST</code> <code><b>/auth/login</b></code> <code>(authorize user and return token)</code> </summary>
 
-```bash
-# development
-$ npm run start
+##### Body
 
-# watch mode
-$ npm run start:dev
+> | name      |  type     | data type               | description                                                           |
+> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
+> | username      |  required | string   | username of user  |
+> | password | required | string | password of user |
 
-# production mode
-$ npm run start:prod
-```
 
-## Test
+##### Responses
 
-```bash
-# unit tests
-$ npm run test
+> | http code     | content-type                      | response                                                            |
+> |---------------|-----------------------------------|---------------------------------------------------------------------|
+> | `200`         | `application/json`        | `{"status":"success","message":"Welcome back", "token": "AUTHORIZATION_TOKEN"}` |
+> | `400`         | `application/json`                | `{"status":"unauthorized","message":"ERROR_MESSAGE"}` |
 
-# e2e tests
-$ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
-```
+</details>
 
-## Support
+-----
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+<details>
+  <summary>
+    <code>POST</code> <code><b>/auth/register</b></code> <code>(register user)</code>
+  </summary>
 
-## Stay in touch
+  ##### Body
+  > | Name | Type | Data Type | Description |
+  > |----|----|----|----|
+  > | username | required | string | username of user|
+  > | email | email, required | string | email of user |
+  > | password | password, required | string | password of user |
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  ##### Responses
+  > | http code | content-type | response |
+  > |--------|--------|------|
+  > | `201` | `application/json` | `{"status":"success","message":"success register user", "data": <User>[]}` |
+  > | `400` | `application/json` | `{"status":"failed","message":"Failed Register user", "error": error}` |
 
-## License
+</details>
 
-Nest is [MIT licensed](LICENSE).
+
+#### Note
+
+<details>
+  <summary><code>GET</code> <code><b>/note</b></code> <code>(Get all notes by author id)</code> </summary>
+
+  ##### Headers
+  > |Name|Type|Data Type|Description|
+  > |----|---|----|----|
+  > |Authorization|required|string|we can get the token from endpoint login|
+
+  ##### Query
+  > | Name | Type | Data Type | Description |
+  > |----|---|----|----|
+  >| status | N/A | string | status of note|
+  >|search | N/A | string | for search note by title, and content|
+
+
+  ##### Responses
+  > | http code | content-type | response |
+  > |--------|--------|------|
+  > | `201` | `application/json` | `{"status":"Success","data": <Note>[]}` |
+</details>
+
+---------
+
+<details>
+  <summary><code>GET</code> <code><b>/note/:id</b></code> <code>(get detail of note by id)</code> </summary>
+
+  ##### Headers
+  > |Name|Type|Data Type|Description|
+  > |----|---|----|----|
+  > |Authorization|required|string|we can get the token from endpoint login|
+
+  ##### Params
+  > |Name|Type|Data Type|Description|
+  >|----|----|----|----|
+  >| id | required, uuid | string | id of note |
+
+
+  ##### Responses
+  > | http code | content-type | response |
+  > |--------|--------|------|
+  > | `201` | `application/json` | `{"status":"success","data": <Note>}` |
+  > | `400` | `application/json` | `{"status":"failed","message":"Failed error","error":error}` |
+
+</details>
+
+---------
+
+<details>
+  <summary><code>POST</code> <code><b>/note</b></code> <code>(store note)</code> </summary>
+
+  ##### Headers
+  > |Name|Type|Data Type|Description|
+  > |----|---|----|----|
+  > |Authorization|required|string|we can get the token from endpoint login|
+
+  ##### Body
+  > |Name|Type|Data Type|Description|
+  >|----|----|----|----|
+  >| title | required | string | title of note |
+  >| content | required | string | content of note |
+  >| color | required | string | color of note |
+  >| status | required | string | status of note |
+
+
+  ##### Responses
+  > | http code | content-type | response |
+  > |--------|--------|------|
+  > | `201` | `application/json` | `{"status":"success","message":"created note","note": <Note>}` |
+  > | `400` | `application/json` | `{"status":"failed","message":"Failed error","error":error}` |
+
+</details>
+
+---------
+
+<details>
+  <summary><code>PUT</code> <code><b>/note/:id</b></code> <code>(store note)</code> </summary>
+
+  ##### Headers
+  > |Name|Type|Data Type|Description|
+  > |----|---|----|----|
+  > |Authorization|required|string|we can get the token from endpoint login|
+
+
+  ##### Params
+  > |Name|Type|Data Type|Description|
+  >|----|----|----|----|
+  >| id | required, uuid | string | id of note |
+
+  ##### Body
+  > |Name|Type|Data Type|Description|
+  >|----|----|----|----|
+  >| title | required | string | title of note |
+  >| content | required | string | content of note |
+  >| color | required | string | color of note |
+  >| status | required | string | status of note |
+
+
+  ##### Responses
+  > | http code | content-type | response |
+  > |--------|--------|------|
+  > | `201` | `application/json` | `{"status":"success","message":"success update note"}` |
+  > | `400` | `application/json` | `{"status":"failed","message":"Failed update error","error":error}` |
+
+</details>
