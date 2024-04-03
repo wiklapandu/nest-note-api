@@ -9,10 +9,16 @@ export class Note {
   title: string;
 
   @Prop()
+  color?: string;
+
+  @Prop()
   content: string;
 
   @Prop()
   status: string;
+
+  @Prop()
+  author: string;
 
   @Prop()
   created_at: Date;

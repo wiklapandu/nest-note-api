@@ -8,7 +8,7 @@ export class AppController {
 
   @Get()
   getHello(@Res() res: Response) {
-    res.status(HttpStatus.OK).json({
+    return res.status(HttpStatus.OK).json({
       status: 'Success',
       message: this.appService.getHello(),
     });
