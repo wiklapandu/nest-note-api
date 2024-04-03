@@ -9,6 +9,9 @@ export class CreateNoteDto {
   content: string;
 
   @IsString()
+  color?: string;
+
+  @IsString()
   status: string;
 
   @IsString()

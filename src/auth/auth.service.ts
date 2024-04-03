@@ -13,9 +13,9 @@ export class AuthService {
 
   async login(user: AuthLogin): Promise<string> {
     const auth = await this.authModel.findOne({ username: user.username });
-    if (!auth) throw new Error('Unknow user.');
+    if (!auth) throw new Error('user is not register.');
     const passed = await bcrypt.compare(user.password, auth.password);
-    if (!passed) throw new Error('Credentials is false');
+    if (!passed) throw new Error('Credentials is invalid');
 
     const payload = {
       id: auth._id,

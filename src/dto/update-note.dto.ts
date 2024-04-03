@@ -9,6 +9,9 @@ export class UpdateNoteDto {
   content: string;
 
   @IsString()
+  color?: string;
+
+  @IsString()
   status: string;
 
   @IsDate()

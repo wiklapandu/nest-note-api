@@ -14,7 +14,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/note-api'),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     AuthModule,
     NotesModule,
   ],
